@@ -21,8 +21,8 @@ def parsing():
 
     # Description of the program given when the help is cast.
     DESCRIPTION = ("This program take an sequence input to output a trajectory"
-                   " a 2D or 3D optimized conformation using a Monte Carlo"
-                   "algorithm, with Dill's H/P model.")
+                   " a 2D or 3D optimized\nconformation using a Monte Carlo"
+                   " algorithm, with Dill's H/P model.")
 
     parser = argparse.ArgumentParser(description=DESCRIPTION)
 
@@ -85,7 +85,7 @@ def fasta_parser(file):
             # The `.fasta` file is wrong, error throw.
             else:
                 sys.exit(f"ERROR: It's look like your file '{file}' does not"
-                         " respect the classical format. Please check it.")
+                         " respect the classical format.\nPlease check it.")
 
     # Adding the last sequence.
     seq_list += [sequence.upper()]

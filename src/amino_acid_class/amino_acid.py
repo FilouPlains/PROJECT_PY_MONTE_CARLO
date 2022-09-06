@@ -6,7 +6,8 @@ class AminoAcid:
         self.y = None
     
     def __str__(self):
-        return f"Amino acid class into '{self.model}'."
+        return (f"Amino acid class into '{self.model}'. With x = {self.x} and y"
+                f" = {self.y}")
 
     # Setting neighbors.
     def left_neigh(self, neighbour):
@@ -18,9 +19,8 @@ class AminoAcid:
     # Setting coords.
     def set_coord(self, coord):
         if self.check_overlap(coord[0], coord[1], True) and \
-            self.check_overlap(coord[0], coord[1], False):
+        self.check_overlap(coord[0], coord[1], False):
             self.x, self.y = coord
-            
             return True
         else:
             return False

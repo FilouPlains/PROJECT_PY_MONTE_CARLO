@@ -17,15 +17,17 @@ if __name__ == "__main__":
     else:
         seq_list = [argument["input"].upper()]
 
-    print(argument["input"])
-    print(seq_list)
-
     seq_list = trlt.translation(seq_list)
-
-    print(seq_list)
+    
+    list_seq_link = []
     
     for sequence in seq_list:
-        clattrib.amino_acid_manip(sequence)
+        list_seq_link += [clattrib.AminoAcidManip(sequence)]
         
-        for amino_acid in link_sequence:
+    link_sequence = list_seq_link[0]
+    
+    link_sequence.set_path(False)
+    
+    for sequence in list_seq_link:
+        for amino_acid in sequence.get_sequence():
             print(amino_acid)
