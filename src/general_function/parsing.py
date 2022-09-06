@@ -67,27 +67,27 @@ def fasta_parser(file):
 
     # Reading the given file.
     with open(file, "r", encoding="utf-8") as file_reader:
-        sequence = []
-        buffer = ""
+        seq_list = []
+        sequence = ""
         new_seq_to_read = False
 
         for line in file_reader:
             # Initiate the reading of a new sequence.
             if line[0] == ">":
-                if buffer != "":
-                    sequence += [buffer.upper()]
+                if sequence != "":
+                    seq_list += [sequence.upper()]
                 new_seq_to_read = True
-                buffer = ""
+                sequence = ""
                 continue
             # Writing a sequence.
             elif new_seq_to_read:
-                buffer += line.strip()
+                sequence += line.strip()
             # The `.fasta` file is wrong, error throw.
             else:
                 sys.exit(f"ERROR: It's look like your file '{file}' does not"
                          " respect the classical format. Please check it.")
 
     # Adding the last sequence.
-    sequence += [buffer.upper()]
+    seq_list += [sequence.upper()]
 
-    return sequence
+    return seq_list

@@ -6,7 +6,7 @@ import sys
 # Global variable as far as it will be declare at each end of recursion, so
 # theoretically `n` times.
 HP_DEFINITION = {
-    # Polar amino acid.
+    # Hydrophobic amino acid.
     "G": "H",
     "P": "H",
     "A": "H",
@@ -17,7 +17,7 @@ HP_DEFINITION = {
     "F": "H",
     "Y": "H",
     "W": "H",
-    # Hydrophobic amino acid.
+    # Polar amino acid.
     "R": "P",
     "H": "P",
     "K": "P",
