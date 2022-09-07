@@ -5,8 +5,9 @@ import sys
 # Importation of "homemade" python module.
 import general_function.parsing as pars
 import general_function.translation as trlt
-import amino_acid_class.class_attribution as clattrib
+import amino_acid_class.sequence_manipulator as clattrib
 import amino_acid_class.coord_manip as cm
+import graphic.visual_graphic as visual
 
 if __name__ == "__main__":
     argument = pars.parsing()
@@ -36,3 +37,8 @@ if __name__ == "__main__":
             print(amino_acid)
 
     patate = cm.CoordManip(len(seq_list[0]))
+    carotte = visual.GraphicalRepresentation(patate.get_coord_list())
+    
+    carotte.draw_amino_acid(50, 50, "H")
+    carotte.draw_amino_acid(50, 90, "P")
+    carotte.display_window()

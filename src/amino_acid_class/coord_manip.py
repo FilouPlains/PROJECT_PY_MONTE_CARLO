@@ -14,6 +14,9 @@ class CoordManip:
     def set_coord(self, id, x, y):
         self.coord_list[0, id] = x
         self.coord_list[1, id] = y
+    
+    def get_coord_list(self):
+        return self.coord_list
 
     def __str__(self):
         return f"Coords are:\n{self.coord_list}"
