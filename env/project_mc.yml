@@ -2,5 +2,4 @@ name: project_mc
 channels:
   - defaults
 dependencies:
-  - numpy=1.23.1
-  - numpy-base=1.23.1
+  - numpy=1.23

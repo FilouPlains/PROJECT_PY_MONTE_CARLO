@@ -19,16 +19,18 @@ if __name__ == "__main__":
         seq_list = [argument["input"].upper()]
 
     seq_list = trlt.translation(seq_list)
-    
+
     list_seq_link = []
-    
+
     for sequence in seq_list:
         list_seq_link += [clattrib.AminoAcidManip(sequence)]
-        
+
     link_sequence = list_seq_link[0]
-    
+
     link_sequence.set_path(False)
     
+    print(list_seq_link)
+
     for sequence in list_seq_link:
         for amino_acid in sequence.get_sequence():
             print(amino_acid)
