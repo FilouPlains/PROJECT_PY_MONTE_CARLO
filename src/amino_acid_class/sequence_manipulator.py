@@ -133,11 +133,22 @@ class AminoAcidManip:
                 break
 
     def get_sequence(self):
-        """Getting of the sequence of the amino acid.
+        """Getter of the sequence of the amino acid.
 
         Returns
         -------
-        list of AminoAcid.
+        list of AminoAcid
             Return a list of amino acid to manipulate them.
         """
         return self.link_sequence
+    
+    def get_coord_manip(self):
+        """Getter of the object that threat coordinates for this object.
+
+        Returns
+        -------
+        CoordManip
+            Return the object to manipulate amino acids' coordinates of this
+            sequence.
+        """
+        return self.coord_manip

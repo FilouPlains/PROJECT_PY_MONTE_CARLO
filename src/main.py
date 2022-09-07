@@ -27,18 +27,11 @@ if __name__ == "__main__":
         list_seq_link += [clattrib.AminoAcidManip(sequence)]
 
     link_sequence = list_seq_link[0]
-
     link_sequence.set_path(False)
-    
-    print(list_seq_link)
 
-    for sequence in list_seq_link:
-        for amino_acid in sequence.get_sequence():
-            print(amino_acid)
-
-    patate = cm.CoordManip(len(seq_list[0]))
+    patate = link_sequence.get_coord_manip()
     carotte = visual.GraphicalRepresentation(patate.get_coord_list())
-    
+
     carotte.draw_amino_acid(50, 50, "H")
     carotte.draw_amino_acid(50, 90, "P")
     carotte.display_window()

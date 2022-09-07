@@ -11,6 +11,11 @@ class CoordManip:
 
     def __init__(self, seq_size):
         """Constructor of CoordManip.
+        
+        Parameters
+        ----------
+        seq_size : int
+            The size of a sequence.
         """
         # Create a `numpy array` to stock all amino acids coordinates.
         self.coord_list = np.array([[None] * seq_size, [None] * seq_size])
