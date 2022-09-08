@@ -30,8 +30,14 @@ if __name__ == "__main__":
     link_sequence.set_path(False)
 
     patate = link_sequence.get_coord_manip()
-    carotte = visual.GraphicalRepresentation(patate.get_coord_list())
-
-    carotte.draw_amino_acid(50, 50, "H")
-    carotte.draw_amino_acid(50, 90, "P")
+    carotte = visual.GraphicalRepresentation(patate.get_coord_list(),
+                                             link_sequence.get_sequence_model())
+    carotte.draw()
+    carotte.display_window()
+    
+    link_sequence.end_move(link_sequence.get_link_sequence()[0])
+    
+    carotte = visual.GraphicalRepresentation(patate.get_coord_list(),
+                                             link_sequence.get_sequence_model())
+    carotte.draw()
     carotte.display_window()

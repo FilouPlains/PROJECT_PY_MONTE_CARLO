@@ -30,7 +30,7 @@ class AminoAcid:
         """
         return f"Amino acid class into '{self.model}'. With ID.{self.id}"
 
-    # Setting neighbors.
+    # Setter neighbors.
     def left_neigh(self, neighbour):
         """Setting the left neighbour of this amino acid object.
 
@@ -50,6 +50,17 @@ class AminoAcid:
             The right neighbour of this amino acid object.
         """
         self.right = neighbour
+        
+    # Getter neighbors.
+    def get_neigh(self):
+        """Getting the neighbour of this amino acid object.
+
+        Returns
+        -------
+        AminoAcid
+            The left and right neighbour of this amino acid object.
+        """
+        return [self.left, self.right]
 
     # Getter and setter of id.
     def set_id(self, id):
@@ -71,3 +82,13 @@ class AminoAcid:
             The id of this amino acid object.
         """
         return self.id
+    
+    def get_model(self):
+        """Get the model of this amino acid object.
+
+        Returns
+        -------
+        int
+            The model of this amino acid object.
+        """
+        return self.model

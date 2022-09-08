@@ -3,7 +3,7 @@
 
 # Importation of other python module.
 import numpy as np
-
+import sys
 
 class CoordManip:
     """An object = coordinate of all amino acids in a sequence.
@@ -11,14 +11,15 @@ class CoordManip:
 
     def __init__(self, seq_size):
         """Constructor of CoordManip.
-        
+
         Parameters
         ----------
         seq_size : int
             The size of a sequence.
         """
         # Create a `numpy array` to stock all amino acids coordinates.
-        self.coord_list = np.array([[None] * seq_size, [None] * seq_size])
+        self.coord_list = np.array([np.full(seq_size, None),
+                                    np.full(seq_size, None)])
 
     def __str__(self):
         """Using `print()` while have a personalize message.
@@ -74,3 +75,9 @@ class CoordManip:
             All amino acid's coordinates.
         """
         return self.coord_list
+
+    def reset_placement(self):
+        """Reset all (x, y) amino acids' coord.
+        """
+        # Reset the `numpy array` with `None` value.
+        self.coord_list = np.full(self.coord_list.shape, None)

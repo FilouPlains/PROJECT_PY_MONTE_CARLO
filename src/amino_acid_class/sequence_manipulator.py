@@ -127,12 +127,20 @@ class AminoAcidManip:
                     if not coord_bad:
                         break
                 if coord_bad:
+                    print("'SNAIL CASE', restarting the sequence placement.")
+
+                    x = 0
+                    y = 0
+
+                    self.coord_manip.reset_placement()
+                    self.coord_manip.set_coord(0, x, y)
+
                     break
             # "snail case", restarting the protein placement.
             if not coord_bad:
-                break
+                seq_well_set = True
 
-    def get_sequence(self):
+    def get_link_sequence(self):
         """Getter of the sequence of the amino acid.
 
         Returns
@@ -141,7 +149,7 @@ class AminoAcidManip:
             Return a list of amino acid to manipulate them.
         """
         return self.link_sequence
-    
+
     def get_coord_manip(self):
         """Getter of the object that threat coordinates for this object.
 
@@ -152,3 +160,67 @@ class AminoAcidManip:
             sequence.
         """
         return self.coord_manip
+
+    def get_sequence_model(self):
+        model_list = []
+
+        for amino_acid in self.link_sequence:
+            model_list += [amino_acid.get_model()]
+
+        return model_list
+
+    def end_move(self, amino_acid):
+        """_summary_
+
+        Parameters
+        ----------
+        amino_acid : AminoAcid
+            The amino acid to be moved.
+
+        Returns
+        -------
+        bool
+            `True` if placement succed, else `False`.
+        """
+        move_list = [-1, 1]
+        shuffle(move_list)
+
+        which_axe = [True, False]
+        shuffle(which_axe)
+        
+        coord_bad = False
+        
+        if amino_acid.get_neigh()[0] != None:
+            id = amino_acid.get_neigh()[0].get_id()
+        else:
+            id = amino_acid.get_neigh()[1].get_id()
+        
+        x = self.coord_manip.get_coord_list()[0, id]
+        y = self.coord_manip.get_coord_list()[1, id]
+
+        # Testing all possible directions. If none found, return `False`.
+        for move in move_list:
+            for select_x in which_axe:
+                # Move while following x or y ?
+                if select_x:
+                    shift_x = x + move
+                    shift_y = y
+                else:
+                    shift_x = x
+                    shift_y = y + move
+
+                coord_bad = self.coord_manip.is_coord_use([shift_x,
+                                                            shift_y])
+
+                # If there is not collision between two amino acid,
+                # validate the placement.
+                if not coord_bad:
+                    id = amino_acid.get_id()
+                    self.coord_manip.set_coord(id, shift_x, shift_y)
+
+                    return True
+
+        return False
+
+    def corner_move(self, amino_acid):
+        
