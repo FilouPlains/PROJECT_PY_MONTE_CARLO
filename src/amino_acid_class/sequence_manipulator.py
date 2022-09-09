@@ -372,7 +372,7 @@ class AminoAcidManip:
                         left_x - shift_x,
                         left_y - shift_y
                     )
-                    
+
                     return True
 
         return False
