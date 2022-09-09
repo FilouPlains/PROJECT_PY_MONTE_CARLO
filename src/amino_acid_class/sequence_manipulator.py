@@ -170,7 +170,7 @@ class AminoAcidManip:
         return model_list
 
     def end_move(self, amino_acid):
-        """_summary_
+        """Try to effectuate a end move. If all conditions are met, do it.
 
         Parameters
         ----------
@@ -180,21 +180,24 @@ class AminoAcidManip:
         Returns
         -------
         bool
-            `True` if placement succed, else `False`.
+            `True` if placement succeed, else `False`.
         """
+        # Return `False` when the amino acid is not at end chain.
+        if amino_acid.get_neigh()[0] != None and \
+                amino_acid.get_neigh()[1] != None:
+            return False
+
         move_list = [-1, 1]
         shuffle(move_list)
 
         which_axe = [True, False]
         shuffle(which_axe)
-        
-        coord_bad = False
-        
+
         if amino_acid.get_neigh()[0] != None:
             id = amino_acid.get_neigh()[0].get_id()
         else:
             id = amino_acid.get_neigh()[1].get_id()
-        
+
         x = self.coord_manip.get_coord_list()[0, id]
         y = self.coord_manip.get_coord_list()[1, id]
 
@@ -210,7 +213,7 @@ class AminoAcidManip:
                     shift_y = y + move
 
                 coord_bad = self.coord_manip.is_coord_use([shift_x,
-                                                            shift_y])
+                                                           shift_y])
 
                 # If there is not collision between two amino acid,
                 # validate the placement.
@@ -223,4 +226,79 @@ class AminoAcidManip:
         return False
 
     def corner_move(self, amino_acid):
+        """Try to effectuate a corner move. If all conditions are met, do it.
+
+        Parameters
+        ----------
+        amino_acid : AminoAcid
+            The amino acid to be moved.
+
+        Returns
+        -------
+        bool
+            `True` if placement succeed, else `False`.
+        """
+        # Return `False` when the sequence is less than 4 amino acids.
+        if len(self.link_sequence) < 3:
+            return False
+        # Return `False` when the amino acid is at end chain.
+        elif amino_acid.get_neigh()[0] == None or \
+                amino_acid.get_neigh()[1] == None:
+            return False
+        
+        # Constant for square root of 2.
+        SQRT_2 = 2 ** (1 / 2)
+
+        # Getting neighbors.
+        id_neigh = [amino_acid.get_neigh()[0].get_id(),
+                    amino_acid.get_neigh()[1].get_id()]
+
+        # Getting coords.
+        left_x = self.coord_manip.get_coord_list()[0, id_neigh[0]]
+        left_y = self.coord_manip.get_coord_list()[1, id_neigh[0]]
+
+        right_x = self.coord_manip.get_coord_list()[0, id_neigh[1]]
+        right_y = self.coord_manip.get_coord_list()[1, id_neigh[1]]
+
+        # Euclidean distance.
+        dist = ((left_x - right_x) ** 2 + (left_y - right_y) ** 2) ** (1 / 2)
+
+        if dist == SQRT_2:
+            id = amino_acid.get_id()
+
+            x = self.coord_manip.get_coord_list()[0, id]
+            y = self.coord_manip.get_coord_list()[1, id]
+
+            # Try to do a corner move. To do so, get x and y from neighbors that
+            # are different from the moved amino acid.
+            if x == left_x:
+                shift_x = right_x
+            else:
+                shift_x = left_x
+
+            if y == left_y:
+                shift_y = right_y
+            else:
+                shift_y = left_y
+
+            coord_bad = self.coord_manip.is_coord_use([shift_x, shift_y])
+            
+            # If there is not collision between two amino acid validate the
+            # placement.
+            if not coord_bad:
+                self.coord_manip.set_coord(id, shift_x, shift_y)
+
+                return True
+
+        return False
+
+    def crankshaft_move(self, amino_acid):
+        # Return `False` when the sequence is less than 4 amino acids.
+        if len(self.link_sequence) < 4:
+            return False
+        # Return `False` when the amino acid is at end chain.
+        elif amino_acid.get_neigh()[0] == None or \
+            amino_acid.get_neigh()[1] == None:
+            return False
+        
         
