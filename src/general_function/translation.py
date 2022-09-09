@@ -78,8 +78,8 @@ def __attribution(sequence, size):
         if sequence in HP_DEFINITION.keys():
             return HP_DEFINITION[sequence]
         else:
-            sys.exit(f"ERROR: amino acid '{sequence}' unknown, please check"
-                     " your fasta file")
+            sys.exit(f"[Err## 1] amino acid '{sequence}' unknown. Please check"
+                     " your fasta file or your\ninput sequence.")
     else:
         left = __attribution(sequence[:size // 2], size // 2)
         # When odd number encounter, adding 1 to the int() division, else ERROR.

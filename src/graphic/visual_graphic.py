@@ -1,4 +1,4 @@
-# Importation of other python module.
+ # Importation of other python module.
 import numpy as np
 import sys
 import tkinter as tk

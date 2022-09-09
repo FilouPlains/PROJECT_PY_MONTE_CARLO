@@ -36,7 +36,8 @@ if __name__ == "__main__":
     carotte.display_window()
     
     # link_sequence.end_move(link_sequence.get_link_sequence()[0])
-    link_sequence.corner_move(link_sequence.get_link_sequence()[1])
+    # link_sequence.corner_move(link_sequence.get_link_sequence()[1])
+    link_sequence.crankshaft_move(link_sequence.get_link_sequence()[2])
     
     carotte = visual.GraphicalRepresentation(patate.get_coord_list(),
                                              link_sequence.get_sequence_model())

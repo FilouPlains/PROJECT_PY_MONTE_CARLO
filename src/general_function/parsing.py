@@ -32,7 +32,7 @@ def parsing():
 
     # == REQUIRED.
     parser.add_argument(
-        "-i, -input",
+        "-i, --input",
         required=True,
         dest="input",
         type=str,
@@ -62,8 +62,7 @@ def fasta_parser(file):
     """
     # Checking if the file exists/the path is good.
     if not(os.path.exists(file)):
-        sys.exit(f"ERROR: The file '{file}' does not exist (or wrong path"
-                 " given).")
+        sys.exit(f"[Errno 2] No such file or directory: '{file}'.")
 
     # Reading the given file.
     with open(file, "r", encoding="utf-8") as file_reader:

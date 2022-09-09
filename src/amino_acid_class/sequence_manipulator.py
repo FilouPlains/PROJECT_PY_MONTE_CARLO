@@ -245,7 +245,7 @@ class AminoAcidManip:
         elif amino_acid.get_neigh()[0] == None or \
                 amino_acid.get_neigh()[1] == None:
             return False
-        
+
         # Constant for square root of 2.
         SQRT_2 = 2 ** (1 / 2)
 
@@ -282,7 +282,7 @@ class AminoAcidManip:
                 shift_y = left_y
 
             coord_bad = self.coord_manip.is_coord_use([shift_x, shift_y])
-            
+
             # If there is not collision between two amino acid validate the
             # placement.
             if not coord_bad:
@@ -293,12 +293,86 @@ class AminoAcidManip:
         return False
 
     def crankshaft_move(self, amino_acid):
+        """Try to effectuate a crankshaft move. If all conditions are met, do
+        it.
+
+        Parameters
+        ----------
+        amino_acid : AminoAcid
+            The amino acid to be moved.
+
+        Returns
+        -------
+        bool
+            `True` if placement succeed, else `False`.
+        """
         # Return `False` when the sequence is less than 4 amino acids.
         if len(self.link_sequence) < 4:
             return False
         # Return `False` when the amino acid is at end chain.
         elif amino_acid.get_neigh()[0] == None or \
-            amino_acid.get_neigh()[1] == None:
+                amino_acid.get_neigh()[1] == None:
             return False
-        
-        
+        # If left and right amino acids of this moved amino acid both do not
+        # have a neighbour, return `False`.
+        elif amino_acid.get_neigh()[0].get_neigh()[0] == None \
+                and amino_acid.get_neigh()[1].get_neigh()[1] == None:
+            return False
+
+        # Try first case : get 2 left neighbors and 1 right.
+        if amino_acid.get_neigh()[0].get_neigh()[0] != None:
+            # Constant for square root of 2.
+            SQRT_2 = 2 ** (1 / 2)
+
+            # Define all neighbors and coordinates.
+            left_neigh = amino_acid.get_neigh()[0]
+            left_x = self.coord_manip.get_coord_list()[0, left_neigh.get_id()]
+            left_y = self.coord_manip.get_coord_list()[1, left_neigh.get_id()]
+
+            way_neigh = amino_acid.get_neigh()[0].get_neigh()[0]
+            way_x = self.coord_manip.get_coord_list()[0, way_neigh.get_id()]
+            way_y = self.coord_manip.get_coord_list()[1, way_neigh.get_id()]
+
+            right_neigh = amino_acid.get_neigh()[1]
+            right_x = self.coord_manip.get_coord_list()[
+                0, right_neigh.get_id()]
+            right_y = self.coord_manip.get_coord_list()[
+                1, right_neigh.get_id()]
+
+            # Define coords of this amino acid.
+            id = amino_acid.get_id()
+            x = self.coord_manip.get_coord_list()[0, id]
+            y = self.coord_manip.get_coord_list()[1, id]
+
+            # Calculate distance.
+            bottom_line = ((way_x - right_x) ** 2 + (way_y - right_y) ** 2) \
+                ** (1 / 2)
+
+            # Which way to move with the crankshaft.
+            if bottom_line == 1:
+                if x == right_x:
+                    shift_x = 0
+                    shift_y = (y - right_y) * 2
+                else:
+                    shift_x = (x - right_x) * 2
+                    shift_y = 0
+
+                # Test if the movement is available.
+                coord_bad = self.coord_manip.is_coord_use([x - shift_x,
+                                                           y - shift_y])
+                coord_bad &= self.coord_manip.is_coord_use([left_x - shift_x,
+                                                            left_y - shift_y])
+
+                # If there is not collision between two amino acid validate the
+                # placement.
+                if not coord_bad:
+                    self.coord_manip.set_coord(id, x - shift_x, y - shift_y)
+                    self.coord_manip.set_coord(
+                        left_neigh.get_id(),
+                        left_x - shift_x,
+                        left_y - shift_y
+                    )
+                    
+                    return True
+
+        return False
