@@ -3,7 +3,8 @@
 
 # Importation of other python module.
 import numpy as np
-import sys
+from copy import deepcopy
+
 
 class CoordManip:
     """An object = coordinate of all amino acids in a sequence.
@@ -20,6 +21,9 @@ class CoordManip:
         # Create a `numpy array` to stock all amino acids coordinates.
         self.coord_list = np.array([np.full(seq_size, None),
                                     np.full(seq_size, None)])
+
+        # Instantiate his futur copy
+        self.copy_coord_list = None
 
     def __str__(self):
         """Using `print()` while have a personalize message.
@@ -81,3 +85,49 @@ class CoordManip:
         """
         # Reset the `numpy array` with `None` value.
         self.coord_list = np.full(self.coord_list.shape, None)
+
+    def initiate_snake_drag(self):
+        """Initiate the snake dragging by create a second coordinates `numpy
+        array`.
+        """
+        self.copy_coord_list = deepcopy(self.coord_list)
+
+    def validate_snake_drag(self, is_valid=False):
+        """Deep copy the snake dragging `numpy array` to the original one if
+        `True`. Else reset.
+
+        Parameters
+        ----------
+        is_valid : bool, optional
+            If `True`, affect this array to the original coordinates' one. Else,
+            if `False`, reset the array. By default `False`.
+        """
+        if is_valid:
+            self.coord_list = deepcopy(self.copy_coord_list)
+
+        self.copy_coord_list = None
+
+    def set_copy_coord(self, id, x, y):
+        """Setter of the coordinate of ONE amino acid.
+
+        Parameters
+        ----------
+        id : int
+            Position of the amino acid into the sequence.
+        x : int
+            X position.
+        y : int
+            Y position.
+        """
+        self.copy_coord_list[0, id] = x
+        self.copy_coord_list[1, id] = y
+
+    def get_copy_coord(self):
+        """Getter of coordinates.
+
+        Returns
+        -------
+        numpy array
+            All amino acid's coordinates.
+        """
+        return self.copy_coord_list

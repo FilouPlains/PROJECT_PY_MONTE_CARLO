@@ -74,6 +74,9 @@ def fasta_parser(file):
             # Initiate the reading of a new sequence.
             if line[0] == ">":
                 if sequence != "":
+                    if len(sequence) < 2:
+                        sys.exit("[Err## 2] Given sequence too short.")
+                        
                     seq_list += [sequence.upper()]
                 new_seq_to_read = True
                 sequence = ""
@@ -83,8 +86,8 @@ def fasta_parser(file):
                 sequence += line.strip()
             # The `.fasta` file is wrong, error throw.
             else:
-                sys.exit(f"ERROR: It's look like your file '{file}' does not"
-                         " respect the classical format.\nPlease check it.")
+                sys.exit(f"[Err## 3] The '.fasta' file ('{file}') is in the"
+                         " wrong format.")
 
     # Adding the last sequence.
     seq_list += [sequence.upper()]

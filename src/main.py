@@ -17,6 +17,8 @@ if __name__ == "__main__":
     if input[-3:] == ".fa" or input[-6:] == ".fasta":
         seq_list = pars.fasta_parser(file=argument["input"])
     else:
+        if len(argument["input"]) < 2:
+                        sys.exit("[Err## 2] Sequence too short.")
         seq_list = [argument["input"].upper()]
 
     seq_list = trlt.translation(seq_list)
@@ -37,7 +39,8 @@ if __name__ == "__main__":
     
     # link_sequence.end_move(link_sequence.get_link_sequence()[0])
     # link_sequence.corner_move(link_sequence.get_link_sequence()[1])
-    link_sequence.crankshaft_move(link_sequence.get_link_sequence()[2])
+    # link_sequence.crankshaft_move(link_sequence.get_link_sequence()[1])
+    link_sequence.pull_moves(link_sequence.get_link_sequence()[0])
     
     carotte = visual.GraphicalRepresentation(patate.get_coord_list(),
                                              link_sequence.get_sequence_model())

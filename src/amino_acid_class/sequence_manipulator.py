@@ -3,6 +3,7 @@
 
 # Importation of other python module.
 from random import shuffle
+import sys
 
 # Importation of "homemade" python module.
 import amino_acid_class.amino_acid as aa
@@ -12,6 +13,9 @@ import amino_acid_class.coord_manip as co_manip
 class AminoAcidManip:
     """An object = a sequence and method to manipulate it.
     """
+
+    # Constant for square root of 2.
+    SQRT_2 = 2 ** (1 / 2)
 
     def __init__(self, sequence):
         """Constructor of AminoAcidManip.
@@ -162,6 +166,13 @@ class AminoAcidManip:
         return self.coord_manip
 
     def get_sequence_model(self):
+        """Return a list of all actual amino acid H/P model.
+
+        Returns
+        -------
+        list of string
+            List of H/P model based on each amino acid in this actual sequence.
+        """
         model_list = []
 
         for amino_acid in self.link_sequence:
@@ -183,8 +194,8 @@ class AminoAcidManip:
             `True` if placement succeed, else `False`.
         """
         # Return `False` when the amino acid is not at end chain.
-        if amino_acid.get_neigh()[0] != None and \
-                amino_acid.get_neigh()[1] != None:
+        if amino_acid.get_neigh()[0] is not None and \
+                amino_acid.get_neigh()[1] is not None:
             return False
 
         move_list = [-1, 1]
@@ -193,7 +204,7 @@ class AminoAcidManip:
         which_axe = [True, False]
         shuffle(which_axe)
 
-        if amino_acid.get_neigh()[0] != None:
+        if amino_acid.get_neigh()[0] is not None:
             id = amino_acid.get_neigh()[0].get_id()
         else:
             id = amino_acid.get_neigh()[1].get_id()
@@ -242,12 +253,9 @@ class AminoAcidManip:
         if len(self.link_sequence) < 3:
             return False
         # Return `False` when the amino acid is at end chain.
-        elif amino_acid.get_neigh()[0] == None or \
-                amino_acid.get_neigh()[1] == None:
+        elif amino_acid.get_neigh()[0] is None or \
+                amino_acid.get_neigh()[1] is None:
             return False
-
-        # Constant for square root of 2.
-        SQRT_2 = 2 ** (1 / 2)
 
         # Getting neighbors.
         id_neigh = [amino_acid.get_neigh()[0].get_id(),
@@ -263,7 +271,7 @@ class AminoAcidManip:
         # Euclidean distance.
         dist = ((left_x - right_x) ** 2 + (left_y - right_y) ** 2) ** (1 / 2)
 
-        if dist == SQRT_2:
+        if dist == self.SQRT_2:
             id = amino_acid.get_id()
 
             x = self.coord_manip.get_coord_list()[0, id]
@@ -292,7 +300,7 @@ class AminoAcidManip:
 
         return False
 
-    def crankshaft_move(self, amino_acid):
+    def crankshaft_move(self, amino_acid, do_shift=True):
         """Try to effectuate a crankshaft move. If all conditions are met, do
         it.
 
@@ -300,6 +308,9 @@ class AminoAcidManip:
         ----------
         amino_acid : AminoAcid
             The amino acid to be moved.
+        do_shift : bool
+            If `True`, call on recursion with amino acid's left neighbour as the
+            new neighbour. Else, if `False`, do none of that.
 
         Returns
         -------
@@ -310,20 +321,17 @@ class AminoAcidManip:
         if len(self.link_sequence) < 4:
             return False
         # Return `False` when the amino acid is at end chain.
-        elif amino_acid.get_neigh()[0] == None or \
-                amino_acid.get_neigh()[1] == None:
+        elif amino_acid.get_neigh()[0] is None or \
+                amino_acid.get_neigh()[1] is None:
             return False
         # If left and right amino acids of this moved amino acid both do not
         # have a neighbour, return `False`.
-        elif amino_acid.get_neigh()[0].get_neigh()[0] == None \
-                and amino_acid.get_neigh()[1].get_neigh()[1] == None:
+        elif amino_acid.get_neigh()[0].get_neigh()[0] is None \
+                and amino_acid.get_neigh()[1].get_neigh()[1] is None:
             return False
 
         # Try first case : get 2 left neighbors and 1 right.
-        if amino_acid.get_neigh()[0].get_neigh()[0] != None:
-            # Constant for square root of 2.
-            SQRT_2 = 2 ** (1 / 2)
-
+        if amino_acid.get_neigh()[0].get_neigh()[0] is not None:
             # Define all neighbors and coordinates.
             left_neigh = amino_acid.get_neigh()[0]
             left_x = self.coord_manip.get_coord_list()[0, left_neigh.get_id()]
@@ -358,10 +366,10 @@ class AminoAcidManip:
                     shift_y = 0
 
                 # Test if the movement is available.
-                coord_bad = self.coord_manip.is_coord_use([x - shift_x,
-                                                           y - shift_y])
-                coord_bad &= self.coord_manip.is_coord_use([left_x - shift_x,
-                                                            left_y - shift_y])
+                coord_bad = self.coord_manip.is_coord_use([x + shift_x,
+                                                           y + shift_y])
+                coord_bad &= self.coord_manip.is_coord_use([x + shift_x,
+                                                           y + shift_y])
 
                 # If there is not collision between two amino acid validate the
                 # placement.
@@ -374,5 +382,154 @@ class AminoAcidManip:
                     )
 
                     return True
+            # Next step are for shifting from actual to right amino acid.
+            elif do_shift:
+                self.crankshaft_move(amino_acid.get_neigh()[1], False)
+        elif do_shift:
+            self.crankshaft_move(amino_acid.get_neigh()[1], False)
 
         return False
+
+    def pull_moves(self, amino_acid, do_shift=True):
+        """Try to effectuate a pull move. If all conditions are met, do it.
+
+        Parameters
+        ----------
+        amino_acid : AminoAcid
+            The amino acid to be moved.
+        do_shift : bool
+            If `True`, call on recursion with amino acid's left neighbour as the
+            new neighbour. Else, if `False`, do none of that.
+
+        Returns
+        -------
+        bool
+            `True` if placement succeed, else `False`.
+        """
+        # Check if there's a left neighbour (in case of being at N-ter).
+        if amino_acid.get_neigh()[0] is None:
+            return self.pull_moves(amino_acid.get_neigh()[1], False)
+        
+        # Coordinates to test.
+        x_list = [-1, 1]
+        shuffle(x_list)
+
+        y_list = [-1, 1]
+        shuffle(y_list)
+
+        # Define all neighbors and coordinates.
+        left_neigh = amino_acid.get_neigh()[0]
+        left_x = self.coord_manip.get_coord_list()[0, left_neigh.get_id()]
+        left_y = self.coord_manip.get_coord_list()[1, left_neigh.get_id()]
+
+        # Define coords of this amino acid.
+        id = amino_acid.get_id()
+        x = self.coord_manip.get_coord_list()[0, id]
+        y = self.coord_manip.get_coord_list()[1, id]
+
+        for shift_x in x_list:
+            for shift_y in y_list:
+                # Check if amino acids placements are possible.
+                coord_bad = self.coord_manip.is_coord_use([x + shift_x,
+                                                           y + shift_y])
+                coord_bad &= self.coord_manip.is_coord_use([left_x + shift_x,
+                                                           left_y + shift_y])
+
+                dist_left_act = ((left_x + shift_x - x) ** 2 +
+                                 (left_y + shift_y - y) ** 2) ** (1 / 2)
+
+                away_neigh = left_neigh.get_neigh()[0]
+
+                # Here, we check that the left amino acid of the left amino acid
+                # of the current amino acid is right next to each other. In
+                # other words, we check that there's a distance of 1 between 3
+                # consecutive amino acid from the actual to 2 amino acid on its
+                # left.
+                if away_neigh is not None:
+                    away_x = self.coord_manip.get_coord_list()[
+                        0, away_neigh.get_id()]
+                    away_y = self.coord_manip.get_coord_list()[
+                        1, away_neigh.get_id()]
+
+                    dist_left_away = ((left_x - away_x) ** 2 +
+                                      (left_y - away_y) ** 2) ** (1 / 2)
+                else:
+                    dist_left_away = 1
+
+                # Doing the snake drag if the movement is valid.
+                if not coord_bad and dist_left_act != 1 and dist_left_away == 1:
+                    self.coord_manip.initiate_snake_drag()
+
+                    self.coord_manip.set_copy_coord(
+                        id, x + shift_x, y + shift_y)
+                    self.coord_manip.set_copy_coord(
+                        left_neigh.get_id(),
+                        left_x + shift_x,
+                        left_y + shift_y
+                    )
+
+                    snake_drag_done = self.__snake_drag(
+                        amino_acid.get_neigh()[1],
+                        left_neigh.get_id()
+                    )
+
+                    # This next message will never be sent.
+                    if not snake_drag_done:
+                        sys.exit("[Err## 4] Unexpected result of the 'snake"
+                                 " drag'. Please, restart the simulation.")
+
+                    return True
+        # Trying to change the couple of moved amino acid.
+        if do_shift and amino_acid.get_neigh()[1] is not None:
+            return self.pull_moves(amino_acid.get_neigh()[1], False)
+
+        return False
+
+    def __snake_drag(self, amino_acid, id):
+        """Do a snake drag until certain conditions are met.
+
+        Parameters
+        ----------
+        amino_acid : AminoAcid
+            The actual amino acid to be dragged.
+        id : int
+            Which coordinates to apply to the amino acid to be dragged.
+
+        Returns
+        -------
+        bool
+            When the snake dragging is finish, return `True`.
+        """
+        # First obligatory thing to do: move the amino acid to the coordinates
+        # of his left left one.
+        x = self.coord_manip.get_coord_list()[0, id]
+        y = self.coord_manip.get_coord_list()[1, id]
+
+        act_id = amino_acid.get_id()
+        self.coord_manip.set_copy_coord(act_id, x, y)
+
+        neigh = amino_acid.get_neigh()[1]
+
+        # First stop condition: end of chain.
+        if neigh is None:
+            self.coord_manip.validate_snake_drag(True)
+            return True
+
+        # Getting coordinates.
+        act_x = self.coord_manip.get_copy_coord()[0, act_id]
+        act_y = self.coord_manip.get_copy_coord()[1, act_id]
+
+        next_id = neigh.get_id()
+        next_x = self.coord_manip.get_coord_list()[0, next_id]
+        next_y = self.coord_manip.get_coord_list()[1, next_id]
+
+        # Calculate distance.
+        dist = ((act_x - next_x) ** 2 + (act_y - next_y) ** 2) ** (1 / 2)
+
+        # Second stop condition: relink between actual and right amino acid.
+        if dist == 1:
+            self.coord_manip.validate_snake_drag(True)
+            return True
+
+        # Recursive call.
+        return self.__snake_drag(neigh, id + 1)
