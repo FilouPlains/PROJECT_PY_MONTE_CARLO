@@ -2,8 +2,9 @@
 """
 
 # Importation of other python module.
-import numpy as np
 from copy import deepcopy
+
+import numpy as np
 
 
 class CoordManip:
@@ -131,3 +132,42 @@ class CoordManip:
             All amino acid's coordinates.
         """
         return self.copy_coord_list
+
+    def calc_energy(self, model):
+        """Calculate protein energy.
+
+        Parameters
+        ----------
+        model : list[string]
+            List of model H/P of this sequence.
+
+        Returns
+        -------
+        float
+            The energy of the sequence after calculation.
+        """
+        energy = 0
+        is_h = False
+        model = np.asarray(model)
+
+        for i in range(len(model)):
+            if model[i] == "H":
+                x = self.get_coord_list()[0, i]
+                y = self.get_coord_list()[1, i]
+
+                filter = np.isin(self.coord_list[0], x + np.array([-1, 1])) \
+                    & np.isin(self.coord_list[1], y)
+                filter |= np.isin(self.coord_list[0], x) \
+                    & np.isin(self.coord_list[1], y + np.array([-1, 1]))
+                filter &= (model == "H")
+
+                energy += np.sum(filter) * -0.5
+                
+                if is_h:
+                    energy += 1
+
+                is_h = True
+            else:
+                is_h = False
+
+        return energy

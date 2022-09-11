@@ -37,9 +37,11 @@ if __name__ == "__main__":
     carotte.draw()
     carotte.display_window()
     
-    # link_sequence.end_move(link_sequence.get_link_sequence()[0])
-    # link_sequence.corner_move(link_sequence.get_link_sequence()[1])
-    # link_sequence.crankshaft_move(link_sequence.get_link_sequence()[1])
+    print("energie =", patate.calc_energy(link_sequence.get_sequence_model()))
+    
+    link_sequence.end_move(link_sequence.get_link_sequence()[0])
+    link_sequence.corner_move(link_sequence.get_link_sequence()[1])
+    link_sequence.crankshaft_move(link_sequence.get_link_sequence()[1])
     link_sequence.pull_moves(link_sequence.get_link_sequence()[0])
     
     carotte = visual.GraphicalRepresentation(patate.get_coord_list(),
