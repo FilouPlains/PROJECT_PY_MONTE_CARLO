@@ -71,6 +71,9 @@ class CoordManip:
         self.coord_list[0, id] = x
         self.coord_list[1, id] = y
 
+    def set_whole_coord(self, buffer):
+        self.coord_list = deepcopy(buffer)
+
     def get_coord_list(self):
         """Getter of coordinates.
 

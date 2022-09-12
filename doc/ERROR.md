@@ -1,6 +1,6 @@
-# ERROR DESCRPTION
+# ERROR DESCRIPTION
 
-> ## Navigation menu
+> ## Menu
 > 
 > **[[Err## 1]](#err-1)**
 > 
@@ -9,6 +9,14 @@
 > **[[Err## 3]](#err-3)**
 > 
 > **[[Err## 4]](#err-4)**
+> 
+> **[[Err## 5]](#err-5)**
+> 
+> **[[Err## 6]](#err-6)**
+>
+> **[[Err## 7]](#err-7)**
+>
+> **[[Err## 8]](#err-8)**
 
 
 ## [Err## 1]
@@ -92,3 +100,40 @@ With all "X" representing a classical amino acid (see the list upper, in
 ```
 
 An error that should never occur. If that the case, please **signal it**!
+
+## [Err## 5]
+
+```
+[Err## 5] The maximal temperature is inferior to the minimal one. Please, invert
+value.
+```
+
+In the given parameters, the maximal temperature is actually inferior to the
+minimal one. To correct it, simply invert the value.
+
+## [Err## 6]
+```
+[Err## 6] The temperature only accept positive integer.
+```
+
+You actually give one temperature that is inferior or equal to 0. Value should
+be strictly superior to 0. Please change the given value.
+
+### [Err## 7]
+
+```
+[Err## 7] A probability should be include in [0, 1].
+```
+
+Actually, math define that a probability have to be superior to 0 and inferior
+to 1. So, if you give a probability not include in that interval, an error is
+throw.
+
+### [Err## 8]
+
+```
+[Err## 8] Number of step should at least be 1.
+```
+
+Do to the Monte Carlo algorithm, you actually need to do **AT LEAST** one step.
+So you have to give in arguments a value > 0.

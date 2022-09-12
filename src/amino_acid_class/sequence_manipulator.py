@@ -180,6 +180,9 @@ class AminoAcidManip:
 
         return model_list
 
+    def get_seq_length(self):
+        return len(self.link_sequence)
+
     def end_move(self, amino_acid):
         """Try to effectuate a end move. If all conditions are met, do it.
 
@@ -366,10 +369,10 @@ class AminoAcidManip:
                     shift_y = 0
 
                 # Test if the movement is available.
-                coord_bad = self.coord_manip.is_coord_use([x + shift_x,
-                                                           y + shift_y])
-                coord_bad |= self.coord_manip.is_coord_use([x + shift_x,
-                                                           y + shift_y])
+                coord_bad = self.coord_manip.is_coord_use([x - shift_x,
+                                                           y - shift_y])
+                coord_bad |= self.coord_manip.is_coord_use([left_x - shift_x,
+                                                           left_y - shift_y])
 
                 # If there is not collision between two amino acid validate the
                 # placement.
@@ -407,9 +410,9 @@ class AminoAcidManip:
             `True` if placement succeed, else `False`.
         """
         # Check if there's a left neighbour (in case of being at N-ter).
-        if amino_acid.get_neigh()[0] is None:
-            return self.pull_moves(amino_acid.get_neigh()[1], False)
-        
+        if amino_acid.get_neigh()[0] is None or amino_acid.get_neigh()[1] is None:
+            return False
+
         # Coordinates to test.
         x_list = [-1, 1]
         shuffle(x_list)
@@ -434,7 +437,7 @@ class AminoAcidManip:
                                                            y + shift_y])
                 coord_bad |= self.coord_manip.is_coord_use([left_x + shift_x,
                                                            left_y + shift_y])
-                
+
                 dist_left_act = ((left_x + shift_x - x) ** 2 +
                                  (left_y + shift_y - y) ** 2) ** (1 / 2)
 
@@ -459,7 +462,7 @@ class AminoAcidManip:
                 # Doing the snake drag if the movement is valid.
                 if not coord_bad and dist_left_act != 1 and dist_left_away == 1:
                     self.coord_manip.initiate_snake_drag()
-                    
+
                     self.coord_manip.set_copy_coord(
                         id, x + shift_x, y + shift_y)
                     self.coord_manip.set_copy_coord(
@@ -467,7 +470,7 @@ class AminoAcidManip:
                         left_x + shift_x,
                         left_y + shift_y
                     )
-                    
+
                     # To take in consideration if there's only 2 amino acid.
                     if amino_acid.get_neigh()[1] is not None:
                         snake_drag_done = self.__snake_drag(
@@ -478,7 +481,7 @@ class AminoAcidManip:
                         snake_drag_done = True
                     else:
                         snake_drag_done = False
-                        
+
                     # This next message will never be sent.
                     if not snake_drag_done:
                         sys.exit("[Err## 4] Unexpected result of the 'snake"
@@ -510,7 +513,7 @@ class AminoAcidManip:
         # of his left left one.
         x = self.coord_manip.get_coord_list()[0, id]
         y = self.coord_manip.get_coord_list()[1, id]
-        
+
         act_id = amino_acid.get_id()
         self.coord_manip.set_copy_coord(act_id, x, y)
 
@@ -520,7 +523,7 @@ class AminoAcidManip:
         if neigh is None:
             self.coord_manip.validate_snake_drag(True)
             return True
-        
+
         # Getting coordinates.
         act_x = self.coord_manip.get_copy_coord()[0, act_id]
         act_y = self.coord_manip.get_copy_coord()[1, act_id]

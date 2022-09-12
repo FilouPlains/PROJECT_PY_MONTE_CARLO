@@ -121,7 +121,7 @@ class GraphicalRepresentation:
             x_2 + self.RADIUS,
             y_2 + self.RADIUS,
             # Colors.
-            fill="white",
+            fill="#FEBEBE",
             width=3
         )
 
