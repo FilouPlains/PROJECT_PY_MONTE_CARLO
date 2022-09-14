@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{thachukReplicaExchangeMonte2007}
+\bibinfo{author}{Thachuk, C.}, \bibinfo{author}{Shmygelska, A.} \&
+  \bibinfo{author}{Hoos, H.~H.}
+\newblock \bibinfo{title}{A replica exchange {{Monte Carlo}} algorithm for
+  protein folding in the {{HP}} model} \textbf{\bibinfo{volume}{8}},
+  \bibinfo{pages}{342}.
+\newblock
+  \urlprefix\url{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-342}.
+
+\end{thebibliography}

@@ -18,11 +18,11 @@ class Output():
         """
         # Initialize the `.csv` file.
         if not do_mol:
-            self.writer = open(file, "a", encoding="utf-8")
+            self.writer = open(file, "w", encoding="utf-8")
             self.writer.write("TEMPERATURE,ENERGY,STEP\n")
         # Initialize the `.mol2` file.
         else:
-            self.writer = open(file, "a", encoding="utf-8")
+            self.writer = open(file, "w", encoding="utf-8")
 
     def add_line(self, temperature, energy, step):
         """Write a ligne in the `.csv` file.
