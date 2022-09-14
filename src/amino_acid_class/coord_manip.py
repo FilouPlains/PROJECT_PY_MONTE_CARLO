@@ -72,7 +72,14 @@ class CoordManip:
         self.coord_list[1, id] = y
 
     def set_whole_coord(self, buffer):
-        self.coord_list = deepcopy(buffer)
+        """Reset coordinates after doing an unfavourable move in Monte Carlo.
+
+        Parameters
+        ----------
+        buffer : np.array(np.array(int), np.array(int))
+            All coordinates
+        """
+        self.coord_list = np.asarray(deepcopy(buffer))
 
     def get_coord_list(self):
         """Getter of coordinates.
@@ -82,59 +89,13 @@ class CoordManip:
         numpy array
             All amino acid's coordinates.
         """
-        return self.coord_list
+        return np.asarray(self.coord_list)
 
     def reset_placement(self):
         """Reset all (x, y) amino acids' coord.
         """
         # Reset the `numpy array` with `None` value.
         self.coord_list = np.full(self.coord_list.shape, None)
-
-    def initiate_snake_drag(self):
-        """Initiate the snake dragging by create a second coordinates `numpy
-        array`.
-        """
-        self.copy_coord_list = deepcopy(self.coord_list)
-
-    def validate_snake_drag(self, is_valid=False):
-        """Deep copy the snake dragging `numpy array` to the original one if
-        `True`. Else reset.
-
-        Parameters
-        ----------
-        is_valid : bool, optional
-            If `True`, affect this array to the original coordinates' one. Else,
-            if `False`, reset the array. By default `False`.
-        """
-        if is_valid:
-            self.coord_list = deepcopy(self.copy_coord_list)
-
-        self.copy_coord_list = None
-
-    def set_copy_coord(self, id, x, y):
-        """Setter of the coordinate of ONE amino acid.
-
-        Parameters
-        ----------
-        id : int
-            Position of the amino acid into the sequence.
-        x : int
-            X position.
-        y : int
-            Y position.
-        """
-        self.copy_coord_list[0, id] = x
-        self.copy_coord_list[1, id] = y
-
-    def get_copy_coord(self):
-        """Getter of coordinates.
-
-        Returns
-        -------
-        numpy array
-            All amino acid's coordinates.
-        """
-        return self.copy_coord_list
 
     def calc_energy(self, model):
         """Calculate protein energy.

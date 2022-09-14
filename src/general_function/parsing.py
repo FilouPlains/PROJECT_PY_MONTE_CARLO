@@ -53,7 +53,7 @@ def parsing():
         dest="tmin",
         type=int,
         help=("An optional integer argument. By default set at 35(°C). The"
-              " program will go from\n'tmin' to 'tmax' with a step = 1.")
+              " program will go from 'tmin' to 'tmax' with a step = 1.")
     )
     parser.add_argument(
         "-tmax, --maximal_temperature",
@@ -61,50 +61,87 @@ def parsing():
         dest="tmax",
         type=int,
         help=("An optional integer argument. By default set at 40(°C). The"
-              " program will go from\n'tmin' to 'tmax' with a step = 1.")
+              " program will go from 'tmin' to 'tmax' with a step = 1.")
     )
     parser.add_argument(
-        "-pm, --probability_pull_move",
+        "-co, --cut_off",
         required=False,
-        dest="pm",
-        type=float,
-        help=("An optional argument. Probability of doing a pull move. By"
-              " default set at 0.")
+        dest="co",
+        type=int,
+        help=("An optional argument *IF -remc NOT GIVEN*. Energy when to stop"
+              " the REMC algorithm (cut-off).")
+    )
+    parser.add_argument(
+        "-ts, --total_step",
+        required=False,
+        dest="ts",
+        type=int,
+        help=("An optional argument *IF -remc NOT GIVEN*. Number of REMC step"
+              " to do.\n`total_steps = step * total_step * temperature_range`")
     )
     parser.add_argument(
         "-rp, --random_placement",
         required=False,
         dest="rp",
+        action="store_false",
+        help=("An optional argument. If `True`, place the sequence randomly."
+              " Else, if `False`, linearly. By default set on `False`.")
+    )
+    parser.add_argument(
+        "-remc, --replica_exchange_monte_carlo",
+        required=False,
+        dest="remc",
         action="store_true",
-        help=("An optional argument. If `True`, placement the sequence"
-              " randomly. Else, if\n`False`, linearly. By default set on"
-              " `False`.")
+        help=("An optional argument. If `True`, use the replica exchange Monte"
+              " Carlo algoritme (REMC). If `False`, use the Monte Carlo"
+              " algoritm.")
     )
 
     # Transform the input into a dictionary with arguments as key.
     argument = vars(parser.parse_args())
-    argument_list = argument.keys()
 
     # Default values
     if argument["tmin"] is None:
         argument["tmin"] = 35
     if argument["tmax"] is None:
         argument["tmax"] = 40
-    if argument["pm"] is None:
-        argument["pm"] = 0
 
     # Checking if given input are correct.
     if argument["tmax"] < argument["tmin"]:
-        sys.exit("[Err## 5] The maximal temperature is inferior to the minimal"
-                 " one. Please, invert\nvalue.")
+        parser.print_help()
+        sys.exit("\n[Err## 5] The maximal temperature is inferior to the"
+                 " minimal one. Please, invert\nvalue.")
     elif argument["tmax"] <= 0 or argument["tmin"] <= 0:
-        sys.exit("[Err## 6] The temperature only accept positive integer.")
-    elif argument["pm"] < 0 or argument["pm"] > 1:
-        sys.exit("[Err## 7] A probability should be include in [0, 1].")
+        parser.print_help()
+        sys.exit("\n[Err## 6] The temperature only accept positive integer.")
     elif argument["step"] <= 0:
-        sys.exit("[Err## 8] Number of step should at least be 1.")
+        parser.print_help()
+        sys.exit("\n[Err## 8] Number of step should at least be 1.")
+    elif argument["remc"]:
+        if argument["co"] is None:
+            parser.print_help()
+            sys.exit("\n[Err## 4] When '-remc' given, you have to give a"
+                     " cut-off.")
+        elif argument["co"] >= 0:
+            parser.print_help()
+            sys.exit("\n[Err## 9] The cut-off have to be inferior strictly to"
+                     " 0.")
+        elif argument["ts"] is None:
+            parser.print_help()
+            sys.exit("\n[Err## 10] When '-remc' given, you have to give a"
+                     " total step.")
 
-    # action='store_true' enregistre TRUE, soit bool.
+    # Treating the user input file/sequence.
+    input = argument["input"].lower()
+
+    if input[-3:] == ".fa" or input[-6:] == ".fasta":
+        seq_list = fasta_parser(file=argument["input"])
+    else:
+        if len(argument["input"]) < 2:
+            sys.exit("\n[Err## 2] Sequence too short.")
+        seq_list = [argument["input"].upper()]
+        
+    argument["seq_list"] = seq_list
 
     return argument
 
@@ -137,7 +174,7 @@ def fasta_parser(file):
             if line[0] == ">":
                 if sequence != "":
                     if len(sequence) < 2:
-                        sys.exit("[Err## 2] Given sequence too short.")
+                        sys.exit("\n[Err## 2] Given sequence too short.")
 
                     seq_list += [sequence.upper()]
                 new_seq_to_read = True
@@ -148,7 +185,7 @@ def fasta_parser(file):
                 sequence += line.strip()
             # The `.fasta` file is wrong, error throw.
             else:
-                sys.exit(f"[Err## 3] The '.fasta' file ('{file}') is in the"
+                sys.exit(f"\n[Err## 3] The '.fasta' file ('{file}') is in the"
                          " wrong format.")
 
     # Adding the last sequence.

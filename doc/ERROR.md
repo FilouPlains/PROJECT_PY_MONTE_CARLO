@@ -17,6 +17,10 @@
 > **[[Err## 7]](#err-7)**
 >
 > **[[Err## 8]](#err-8)**
+>
+> **[[Err## 9]](#err-9)**
+>
+> **[[Err## 10]](#err-10)**
 
 
 ## [Err## 1]
@@ -96,10 +100,10 @@ With all "X" representing a classical amino acid (see the list upper, in
 ## [Err## 4]
 
 ```
-[Err## 4] Unexpected result of the 'snake drag'. Please, restart the simulation.
+[Err## 4] When '-remc' given, you have to give a cut-off.
 ```
 
-An error that should never occur. If that the case, please **signal it**!
+To stop the REMC algorithm, you have to give to value: a cut-off and a total step number. Here, you haven't give the first one.
 
 ## [Err## 5]
 
@@ -137,3 +141,19 @@ throw.
 
 Do to the Monte Carlo algorithm, you actually need to do **AT LEAST** one step.
 So you have to give in arguments a value > 0.
+
+## [Err## 9]
+
+```
+[Err## 9] The cut-off have to be inferior strictly to 0.
+```
+
+Here, only favourable energy are accept. Which mean energy inferior strictly to 0 (E < 0). Please enter a good value.
+
+## [Err## 10]
+
+```
+[Err## 10] When '-remc' given, you have to give a total step.
+```
+
+To stop the REMC algorithm, you have to give to value: a cut-off and a total step number. Here, you haven't give the second one.

@@ -53,7 +53,6 @@ def translation(sequence_list):
 
     return translate_seq
 
-
 def __attribution(sequence, size):
     """Recursive dichotomous function to attribute quicker H/P model correctly.
 

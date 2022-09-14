@@ -28,4 +28,4 @@ target/
 .python-version
 
 # Other files
-tk_baballe_class.py
+.vscode
