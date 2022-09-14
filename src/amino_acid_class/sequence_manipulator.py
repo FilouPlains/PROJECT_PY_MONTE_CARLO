@@ -3,6 +3,7 @@
 
 # Importation of other python module.
 from random import shuffle
+import numpy as np
 
 # Importation of "homemade" python module.
 import amino_acid_class.amino_acid as aa
@@ -217,12 +218,6 @@ class AminoAcidManip:
             id = amino_acid.get_neigh()[0].get_id()
         else:
             id = amino_acid.get_neigh()[1].get_id()
-
-        print("test2", type(self.coord_manip.get_coord_list()))
-        print(np.shape(self.coord_manip.get_coord_list))
-        print("test2", self.coord_manip.get_coord_list())
-
-        print(self.coord_manip.get_coord_list()[0])
 
         x = self.coord_manip.get_coord_list()[0, id]
         y = self.coord_manip.get_coord_list()[1, id]

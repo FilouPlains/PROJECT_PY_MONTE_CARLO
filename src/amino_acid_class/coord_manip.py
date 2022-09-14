@@ -116,6 +116,7 @@ class CoordManip:
 
         for i in range(len(model)):
             if model[i] == "H":
+
                 x = self.get_coord_list()[0, i]
                 y = self.get_coord_list()[1, i]
 
@@ -126,7 +127,7 @@ class CoordManip:
                 filter &= (model == "H")
 
                 energy += np.sum(filter) * -0.5
-                
+
                 if is_h:
                     energy += 1
 

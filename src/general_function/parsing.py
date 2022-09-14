@@ -45,6 +45,13 @@ def parsing():
         type=int,
         help="The number of Monte Carlo step to do."
     )
+    parser.add_argument(
+        "-o, --output",
+        required=True,
+        dest="output",
+        type=str,
+        help="An csv file to output."
+    )
 
     # == OPTIONAL.
     parser.add_argument(
@@ -78,6 +85,13 @@ def parsing():
         type=int,
         help=("An optional argument *IF -remc NOT GIVEN*. Number of REMC step"
               " to do.\n`total_steps = step * total_step * temperature_range`")
+    )
+    parser.add_argument(
+        "-mf, --mol_file",
+        required=False,
+        dest="mf",
+        type=str,
+        help=("Write a mol2 file.")
     )
     parser.add_argument(
         "-rp, --random_placement",
@@ -130,6 +144,20 @@ def parsing():
             parser.print_help()
             sys.exit("\n[Err## 10] When '-remc' given, you have to give a"
                      " total step.")
+    elif os.path.exists(argument["output"]):
+        parser.print_help()
+        sys.exit(f"\n[Err## 11] The file '{argument['output']}' already exist,"
+                 " please change the name.")
+
+    # Checking that the output file is correct
+    if argument["output"][-4:] != ".csv":
+        parser.print_help()
+        sys.exit(f"\n[Err## 12] The file '{argument['output']}' have to be in"
+                 " '.csv' format.")
+    elif argument["mf"][-5:] != ".mol2":
+        parser.print_help()
+        sys.exit(f"\n[Err## 13] The file '{argument['mf']}' have to be in"
+                 " '.mol2' format.")
 
     # Treating the user input file/sequence.
     input = argument["input"].lower()
@@ -140,7 +168,7 @@ def parsing():
         if len(argument["input"]) < 2:
             sys.exit("\n[Err## 2] Sequence too short.")
         seq_list = [argument["input"].upper()]
-        
+
     argument["seq_list"] = seq_list
 
     return argument

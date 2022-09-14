@@ -21,6 +21,12 @@
 > **[[Err## 9]](#err-9)**
 >
 > **[[Err## 10]](#err-10)**
+>
+> **[[Err## 11]](#err-11)**
+>
+> **[[Err## 12]](#err-12)**
+>
+> **[[Err## 13]](#err-13)**
 
 
 ## [Err## 1]
@@ -157,3 +163,27 @@ Here, only favourable energy are accept. Which mean energy inferior strictly to 
 ```
 
 To stop the REMC algorithm, you have to give to value: a cut-off and a total step number. Here, you haven't give the second one.
+
+## [Err## 11]
+
+```
+[Err## 11] The file '.' already exist, please change the name.
+```
+
+You actually trying to overwrite a already existing file. Simply change the file name.
+
+## [Err## 12]
+
+```
+[Err## 12] The file '{argument['output']}' have to be in '.csv' format.
+```
+
+The output file have to be in '.csv' format. Simply change or add the correct extension file.
+
+## [Err## 13]
+
+```
+[Err## 13] The file '{argument['output']}' have to be in '.mol2' format.
+```
+
+The output file have to be in '.mol2' format. Simply change or add the correct extension file.

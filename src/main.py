@@ -1,6 +1,4 @@
 # Importation of other python module.
-import os
-import sys
 import textwrap
 
 # Importation of "homemade" python module.
@@ -21,7 +19,9 @@ if __name__ == "__main__":
         monte_carlo = mc.MonteCarlo(
             seq_manip.AminoAcidManip(sequence),
             argument["tmin"],
-            argument["tmax"]
+            argument["tmax"],
+            argument["output"],
+            argument["mf"]
         )
 
         if argument["remc"]:
