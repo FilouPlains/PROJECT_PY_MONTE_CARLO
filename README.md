@@ -1,3 +1,8 @@
+# NOTE AUX CORRECTEURS
+
+> 1. Le rapport se situe dans `doc/report/ROUAUD_rapport.pdf`.
+> 2. Un jeu de données avec des séquences `.fasta` se trouve dans `data`. Les résultats sont compressés dans `data/output.tar.gz`.
+
 # PROJECT_PY_MONTE_CARLO
 
 This program is a implementation of a Replica Exchange Monte Carlo algorithm (REMC) described in the paper _"A replica exchange Monte Carlo algorithm for protein folding in the HP model"_, by THACHUK C. and _al_.
