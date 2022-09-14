@@ -154,10 +154,11 @@ def parsing():
         parser.print_help()
         sys.exit(f"\n[Err## 12] The file '{argument['output']}' have to be in"
                  " '.csv' format.")
-    elif argument["mf"][-5:] != ".mol2":
-        parser.print_help()
-        sys.exit(f"\n[Err## 13] The file '{argument['mf']}' have to be in"
-                 " '.mol2' format.")
+    elif argument["mf"] is not None:
+        if argument["mf"][-5:] != ".mol2":
+            parser.print_help()
+            sys.exit(f"\n[Err## 13] The file '{argument['mf']}' have to be in"
+                    " '.mol2' format.")
 
     # Treating the user input file/sequence.
     input = argument["input"].lower()
