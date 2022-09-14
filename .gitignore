@@ -29,3 +29,9 @@ target/
 
 # Other files
 .vscode
+*.aux
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.synctex.gz

@@ -1,0 +1,246 @@
+\documentclass[12pt, twoside, a4paper]{report}
+
+\usepackage{afterpage}   \usepackage{amsmath}     \usepackage{amssymb}
+\usepackage{cancel}      \usepackage{enumitem}    \usepackage[english]{babel}
+\usepackage{bold-extra}  \usepackage{booktabs}    \usepackage{caption}
+\usepackage{cite}        \usepackage{fancyhdr}    \usepackage[T1]{fontenc}
+\usepackage{geometry}    \usepackage{graphicx}
+
+\usepackage[breaklinks, colorlinks=true, linkcolor=blue, linkcolor=blue,
+    anchorcolor=blue, citecolor=blue, filecolor=blue, menucolor=blue,
+    runcolor=blue, urlcolor=blue]{hyperref}
+
+\usepackage{layout}      \usepackage{listings}    \usepackage{lscape}
+\usepackage{makecell}    \usepackage{mathastext}  \usepackage[version=4]{mhchem}
+\usepackage{multicol}    \usepackage{numprint}    \usepackage{setspace}
+\usepackage{tikz}        \usepackage{times}       \usepackage{titlesec}
+\usepackage{xcolor}      \usepackage{xurl}
+
+\usetikzlibrary{calc}
+
+% URL font
+\urlstyle{same}
+
+% \usepackage{showframe}
+
+% Taille du tableau -0.5 cm
+% \textheight = 731 pt
+% \textwidth = 483 pt
+
+\lstset{
+    basicstyle=\footnotesize\ttfamily,
+    emphstyle={\bfseries},
+    escapeinside={(*}{*)},
+    numbers=left,
+    numberstyle=\scriptsize\color{black},
+    tabsize=4,
+    columns=fixed,
+    frame=tb,
+    showstringspaces=false,
+    showtabs=false,
+    keepspaces,
+    emph={
+        SI,
+        SINON,
+        RETOURNER,
+        FIN,
+        POUR,
+        ALORS,
+        \backslash\backslash,
+        VARIABLE,
+        INITIALISATION,
+        TRAITEMENT,
+        SORTIE
+    },
+    literate={à}{{\`a}}1
+    {é}{{\'e}}1
+    {è}{{\`e}}1
+    {<-}{{$\leftarrow$}}1
+}
+
+\geometry{top = 2.5cm, bottom = 3.5cm, hmargin = 2.5cm}
+
+\newcommand{\emptypage}{
+    \newpage
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-2}
+    \newpage
+}
+\newcommand{\Chapter}[2]{
+    \begin{center}
+        \chapter{#1}
+        {
+            \Large Cours présenté par #2
+            \vspace{1em}
+        }
+        \hrule height 2pt
+    \end{center}
+}
+\newcommand{\fref}[1]{\hyperref[#1]{\textbf{[fig.~\ref*{#1}]}}}
+\newcommand{\subfref}[2]{\hyperref[#1]{\textbf{[fig.~\ref*{#1}~: #2]}}}
+\newcommand{\tref}[1]{\hyperref[#1]{\textbf{[tab.~\ref*{#1}]}}}
+\newcommand{\aref}[1]{\hyperref[#1]{\textbf{[\ref*{#1}]}}}
+\newcommand{\eref}[1]{\textbf{[éq.~\eqref{#1}]}}
+\newcommand{\eqdes}[1]{
+    \begin{footnotesize}
+        \hrule height 1pt
+        #1
+    \end{footnotesize}
+}
+\newcommand{\p}[1]{$^\text{#1}$}
+\newcommand{\id}[1]{$_\text{#1}$}
+\newcommand{\can}[1]{$\cancel{\text{#1}}$}
+\newcommand{\mathBF}[1]{\mathbf{\boldsymbol{#1}}}
+\newcommand{\ms}{\\[1em]}
+\newcommand{\C}{\tiny$\blacksquare$}
+\newcommand{\Cite}[1]{\p{\textbf{\cite{#1}}}}
+
+\renewcommand{\theequation}{\thechapter{}.\arabic{equation}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\thesection}{\arabic{section}}
+
+\newenvironment{matheq}{
+    \begin{equation*}
+        \begin{array}{rcl}
+}{
+        \end{array}
+    \end{equation*}
+}
+\newenvironment{f}{
+    \begin{figure*}
+        \begin{minipage}[c][\textheight][c]{\textwidth}
+}{
+        \end{minipage}
+    \end{center}
+}
+\newcounter{exempleNumber}\setcounter{exempleNumber}{1}
+\newenvironment{exemple}{
+    \begin{itshape}
+        \vspace{.5em}\footnotesize
+        \phantom{M}\hfill\textbf{EXEMPLE~\arabic{exempleNumber}}\hfill\phantom{M}
+        \vspace{.5em}
+        
+        \hrule\vspace{3pt}
+}{
+        \vspace{3pt}\hrule
+    \end{itshape}\stepcounter{exempleNumber}
+}
+
+\makeatletter
+\renewcommand\tableofcontents{%
+    \@starttoc{toc}%
+}
+\renewcommand\listoffigures{%
+        \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+        \@starttoc{lot}%
+}
+\def\tagform@#1{\maketag@@@{\bfseries(\ignorespaces#1\unskip\@@italiccorr)}}
+\makeatother
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.20cm}
+\setlength{\headheight}{0pt}
+\setlength{\columnsep}{2cm}
+
+\titleformat{\section}[hang]
+{\bfseries}
+{\thesection.}
+{1ex}
+{}
+
+\titleformat{\subsection}[hang]
+{\bfseries}
+{\thesubsection.}
+{1ex}
+{}
+
+\titleformat{\subsubsection}[hang]
+{}
+{\phantom{\bfseries\thesubsection\hspace{1ex}}\thesubsubsection.}
+{1ex}
+{}
+
+\captionsetup[figure]{font=footnotesize, labelfont=bf, name={Fig.}, labelformat=simple}
+\captionsetup[table]{font=footnotesize, labelfont=bf, name={Tab.}, labelformat=simple}
+
+\pagestyle{fancy}
+\fancyhead[]{}
+\fancyfoot[C]{--~\thepage{}~--}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{--~\thepage{}~--}}
+
+\title{Report REMC implementation}
+\author{ROUAUD Lucas}
+\date{\today}
+
+\begin{document}
+% \layout{}
+\pagenumbering{arabic}
+\begin{huge}
+    \begin{flushleft}
+        \bfseries Implementation of a Replica Exchange\linebreak
+        Monte Carlo algorithm using Python
+    
+        \vspace{1ex}
+        
+        \hrule height 2pt
+    \end{flushleft}
+\end{huge}
+
+\vspace{1ex}
+
+\textit{\textbf{\large Document réalisé via \LaTeX{}}}
+
+\textbf{REPORTER:} M. GELLY J.-C. and GALOCHKINA T.
+
+\textbf{ROUAUD Lucas --- Master 2 BI}: Université Paris Cité
+
+\begin{center}
+    \begin{minipage}{15cm}
+        \section*{Abstract}
+        \subsection*{Summary}
+
+        \subsection*{Results}
+
+        \subsection*{Availability and implementation}
+    \end{minipage}
+\end{center}
+
+\begin{multicols}{2}
+\section{Introduction}
+
+
+\section{Materials and methods}
+
+
+\section{Results}
+
+
+\section{Discussion}
+
+
+\section{Conclusion}
+
+
+\section{References}
+\begingroup
+    \renewcommand{\chapter}[2]{}%
+
+    % List of style here : /usr/share/texlive/texmf-dist/bibtex/bst
+    \bibliographystyle{naturemag}
+    \bibliography{IEEEabrv, bibliographie.bib}
+\endgroup
+\end{multicols}
+
+\pagebreak
+\section*{Annexes}\pagenumbering{Roman}
+\addcontentsline{toc}{chapter}{Annexes}
+\captionsetup[figure]{font=footnotesize, labelfont=bf, name={Annexe}, labelformat=simple}
+\renewcommand\thefigure{\Roman{figure}}
+\setcounter{figure}{0}
+\end{document}

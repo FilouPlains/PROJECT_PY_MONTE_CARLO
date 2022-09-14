@@ -12,9 +12,9 @@ if __name__ == "__main__":
     seq_list = trlt.translation(argument["seq_list"])
 
     for sequence in seq_list:
-        print("--------------------")
+        print("----------------------------------------")
         print(textwrap.fill(sequence, width=40))
-        print("--------------------")
+        print("----------------------------------------")
 
         monte_carlo = mc.MonteCarlo(
             seq_manip.AminoAcidManip(sequence),
