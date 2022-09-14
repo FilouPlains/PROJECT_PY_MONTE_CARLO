@@ -1,3 +1,22 @@
+"""Script to applied a MC/REMC algorithm on protein folding with Dill's H/P
+model.
+
+Simplet usage
+-------------
+python3 src/main.py -i AA -s 1 -o file.csv
+    -i : str
+        The input sequence.
+    -s : int
+        The number of Monte Carlo step to perform.
+    -o : str
+        An output file with energy in it.
+"""
+
+__authors__ = "ROUAUD Lucas"
+__contact__ = "lucas.rouaud@gmail.com"
+__date__ = "14/09/2022"
+__version__ = "1.0.0"
+
 # Importation of other python module.
 import textwrap
 

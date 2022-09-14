@@ -80,7 +80,7 @@
 \newcommand{\fref}[1]{\hyperref[#1]{\textbf{[fig.~\ref*{#1}]}}}
 \newcommand{\subfref}[2]{\hyperref[#1]{\textbf{[fig.~\ref*{#1}~: #2]}}}
 \newcommand{\tref}[1]{\hyperref[#1]{\textbf{[tab.~\ref*{#1}]}}}
-\newcommand{\aref}[1]{\hyperref[#1]{\textbf{[\ref*{#1}]}}}
+\newcommand{\aref}[1]{\hyperref[#1]{\textbf{app.~[\ref*{#1}]}}}
 \newcommand{\eref}[1]{\textbf{[éq.~\eqref{#1}]}}
 \newcommand{\eqdes}[1]{
     \begin{footnotesize}
@@ -208,17 +208,17 @@
         \section*{Abstract}
 
         \paragraph*{Background}
-        THACHUK C. and \textit{al.} describe the use of a Replica Exchange Monte Carlo algorithm. It shall permit, through Dill's H/P model, the prediction of protein folding on a 2D matrix. But only for an extremely simplified case of hydrophobic amino acid or not. In this paper, we discuss how we implement this program using Python langage and why doing it in this such of manner.
+        THACHUK C. and \textit{al.} describe the use of a Replica Exchange Monte Carlo algorithm. It shall permit, through Dill's H/P model, the prediction of protein folding on a 2D matrix. But only for an extremely simplified case of hydrophobic amino acid or not. In this paper, we discuss how we implement this program using Python language and why doing it in this such of manner.
 
         \vspace{1ex}
 
         \paragraph*{Results}
-        When trying on small dataset, same as the one the authors used in their article, energy results are very different. This show that the effectuation of an unfavourable movement might be badly implemented, or need a huge amount of MC/REMC step.
+        When trying on small dataset, fraction of the one the authors used in their article, energy results are very different. This show that the effectuation of an unfavourable movement might be badly implemented, or need a huge amount of MC/REMC step.
 
         \vspace{1ex}
 
         \paragraph*{Availability and implementation}
-        This paper and the corresponding algorithm with its documentation his available on an GitHub repository: \url{https://github.com/FilouPlains/PROJECT_PY_MONTE_CARLO/}
+        This paper and the corresponding algorithm with its documentation are available on a GitHub repository: \url{https://github.com/FilouPlains/PROJECT_PY_MONTE_CARLO/}
 
         \vspace{1ex}
         \hrule height 0.5pt width 16cm
@@ -252,7 +252,7 @@ In an article, THACHUK C., SHMYGELSKA A. and HOOS H. H. talk about a REMC algori
     \hrule height 1pt
 
     \caption{
-        \textbf{Conformation example found by MC algorithm, for a same starting sequence.} \textit{Red~=} polar residues; \textit{blue~=} hydrophobic residues; \textit{A~=} the sequence is unfold and loose energy; \textit{B~=} the sequence have one hydrophobic interaction (black square), but it appear that polar residues are "attract" inside the protein instead of outside.
+        \textbf{Conformation example found by MC algorithm, for a same starting sequence.} \textit{Red~=} polar residues; \textit{blue~=} hydrophobic residues; \textit{A~=} the sequence is unfolded and lose energy; \textit{B~=} the sequence have one hydrophobic interaction (black square), but it appears that polar residues are "attract" inside the protein instead of outside.
         \label{f:conformation_example}}
 \end{figure*}
 
@@ -270,7 +270,7 @@ In an article, THACHUK C., SHMYGELSKA A. and HOOS H. H. talk about a REMC algori
 
 To implement this program, \texttt{Python 3.10.4} is used. The module \texttt{numpy 1.23} is used for vector computing and the module \texttt{tqdm 4.64.0} to show the estimate time to perform a Monte Carlo algorithm.
 
-The probability of doing a unfavourable movement is given by:
+The probability of doing an unfavourable movement is given by:
 
 \vspace{-2ex}
 
@@ -282,7 +282,7 @@ The probability of doing a unfavourable movement is given by:
     \end{array}
     \right.
 \end{equation*}
-\eqdes{with K\id{B} = Boltzmann's constant; $\Delta{}$E = energy variation between two conformation.}
+\eqdes{with K\id{B} = Boltzmann's constant; $\Delta{}$E = energy variation between two conformations.}
 
 While the probability of doing a replica exchange is given by:
 
@@ -314,24 +314,24 @@ With Delta equal to:
         \label{f:move_set}}
 \end{minipage}
 
-The \fref{f:move_set} describe all implemented movement. To do so, three object where create. One that stock the coordinates, an other the amino acid and a last a sequence which enable communication those two previous one. Like that, we do not manipulate matrix which has a complexity of $O(N^2)$.
+The \fref{f:move_set} describe all implemented movement. To do so, three object where create. One that stock coordinates, an other amino acids and a last the sequence, which enable communication with those two previous one. Like that, we do not manipulate matrix, which has a complexity of $O(N^2)$.
 
-To finish, we produce a \textit{.csv} file to manipulate the data (especially energies) and optionally a \textit{.mol2} file which contains all "frame" during a movement. Like that, with a molecule visualization software like \texttt{PyMol} or \texttt{VMD}, it is possible to observe the trajectory.
+To finish, we produce a \textit{.csv} file to manipulate the data (especially energies) and optionally a \textit{.mol2} file, which contains all "frame" during a movement. Like that, with a molecule visualization software like \texttt{PyMol} or \texttt{VMD}, it is possible to observe the trajectory.
 
 \section{Results}
-First, the \fref{f:conformation_example} show that conformation are sometime loose or block while doing a MC algorithm. For instance, the \subfref{f:conformation_example}{A} show that the conformation is somehow lost (like a denaturation of a protein) by a linearisation; while the \subfref{f:conformation_example}{B} show that the hydrophobic residues are going outside, which provoc a diminution of the energy. Note that those conformation are obtained at the end of a 2,000 step MC algorithm.
+First, the \fref{f:conformation_example} show that conformation are sometime lost or blocked while doing a MC algorithm. For instance, the \subfref{f:conformation_example}{A} show that the conformation is somehow lost (like a denaturation of a protein) by a linearization; while the \subfref{f:conformation_example}{B} show that the hydrophobic residues are going outside, which provoke a diminution of the energy. Note that those conformation are obtained at the end of a 2,000 step MC algorithm.
 
-To continue, when we observe the \subfref{f:energy}{A} we see that the protein do not stay in local minimum, but tend to do the contrary. Also, when tacking all minimum energies values on the  \subfref{f:energy}{B}, we observe that they are not that low compare to the original article of THACHUK C. and \textit{al.}. Those observation tend to show that the algorithm search well minimum, but not efficiently and do not "stay in them".
+To continue, when we observe the \subfref{f:energy}{A} we see that the protein do not stay in "big" local minimum, but tend to do the contrary. Also, when tacking all minimum energies values on the  \subfref{f:energy}{B}, we observe that they are not that low compare to the original article of THACHUK C. and \textit{al.}. Those observations tend to show that the algorithm search well minimum, but not efficiently and do not "stay in them". In other words, we found a local minimum, but not the best one.
 
 \section{Discussion}
-Firstly, the pull move was not implemented, as far as it was too complex to do so. The general method to do it to shift diagonally two residues and move their left or right followers (using recursion) until conditions are met. The first is that all amino acids have been moved until end of chain; the second is that one amino acid after movement is still at a distance of 1 of his neighbour. The thing was there's too much conditions to take in consideration, making quite hard to find a good and functional solution.
+Firstly, the pull move was not implemented, as far as it was too complex to do so. The general method to do it to shift diagonally two residues and move their left or right followers (using recursion) until conditions are met: the first one is that all amino acids have been moved until end of chain; the second one is that one amino acid after movement is still at a distance of 1 of his neighbour. The thing was there's too much conditions to take in consideration, making quite hard to find a good, general and functional solution.
 
-Secondly, parallelisation is never used in the algorithm. Even though the algorithm is fast, there are huge amount of time to win by doing it, especially when doing a REMC. As far as, multiple replica with differents temperature indepedent for a given number of step (until exchange if there is). For example, let's say that we have a PC with 8 cores. The program, when executing take less that 1 core. With parallelisation achieve, it's possibly a division by 8 of time's computation!
+Secondly, parallelization is never used in the algorithm. Even though the algorithm is fast, there are huge amount of time to win by doing it, especially when doing a REMC. Indeed, multiple replica with different temperature are independent for a given number of step (until exchange if there is). For example, let's say that we have a PC with 8 cores. When executing the program, it takes less than one core. With parallelization achieved, it's possibly a division of the time's computation by eight!
 
-Lastly, project organisation and object communication isn't quite perfect. Not all native Python's function are well used (like magic method to work on chain list). Thus, even if, for this case, the implementation isn't that good, it's still better and faster than working with a matrix system.
+Lastly, project organization and object communication isn't quite perfect. Not all native Python's function are well-used (like magic method to work on chain list). Thus, even if in this case the implementation has flaws, it's still better and faster than working with a matrix system.
 
 \section{Conclusion}
-The algorithm is indeed implement, but not perfectly at all. There's a lot of hint showing that is not good at finding global minimum and keeping the optimal conformation. You may also notice that only MC algorithm was analyze, but not the REMC. 
+The algorithm is indeed implement, but not perfectly at all. There's some hints showing that the program is not good at finding global minimum and keeping the optimal conformation. You may also notice that only MC algorithm was analysed, but not the REMC. This is done like so to facilitate and accelerate data production.
 
 \section{References}
 \begingroup
@@ -344,28 +344,36 @@ The algorithm is indeed implement, but not perfectly at all. There's a lot of hi
 \end{multicols}
 
 \pagebreak
-\section*{Annexes}\pagenumbering{Roman}
+\section*{Appendix}\pagenumbering{Roman}
 \addcontentsline{toc}{chapter}{Annexes}
-\captionsetup[figure]{font=footnotesize, labelfont=bf, name={Annexe}, labelformat=simple}
+\captionsetup[figure]{font=footnotesize, labelfont=bf, name={Appendix}, labelformat=simple}
 \renewcommand\thefigure{\Roman{figure}}
 \setcounter{figure}{0}
 
-\begin{tex}
-.
-├── data
-│
-└── src
-    ├── amino_acid_class
-    │   ├── amino_acid.py
-    │   ├── coord_manip.py
-    │   └── sequence_manipulator.py
-    ├── general_function
-    │   ├── parsing.py
-    │   └── translation.py
-    ├── main.py
-    ├── monte_carlo
-    │   └── monte_carlo.py
-    └── output
-        └── output.py
-\end{tex}
+\begingroup
+    \includegraphics[width=\textwidth]{figure/tree.pdf}
+
+    \small
+    \vspace{0.5ex}
+    \hrule height 1pt
+
+    \captionof{figure}{
+        \textbf{Dependencies tree.} \textit{Bold~=} directory; \textit{italic~=} main file, the one used to launch the program.
+        \label{a:tree}}
+\endgroup
+
+The \aref{a:tree} show all the Python programs create during this project. To have the help, simply use:
+
+\texttt{python3 src/main.py -h}
+
+Or use:
+
+\texttt{python3 src/main.py --help}
+
+After that, you can launch the program. There are a lot of options details into the \texttt{README.md} of the project. The minimal functional command is the next one:
+
+\texttt{python3 src/main.py -i AA -s 1 -o file.csv}
+
+We give a sequence of two \texttt{AA} amino acids, then we ask for 1 step of MC. Finally, results are output into a \texttt{file.csv}. This format has been chosen as far as he is very easy to parse and have pre-built function to manipulate it in some cases (like in Python or R for example).
 \end{document}
+    

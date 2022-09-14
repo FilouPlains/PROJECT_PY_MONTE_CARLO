@@ -22,7 +22,7 @@ class AminoAcidManip:
 
         Parameters
         ----------
-        sequence : string
+        sequence : str
             The sequence in H/P model.
         """
         link_sequence = []
