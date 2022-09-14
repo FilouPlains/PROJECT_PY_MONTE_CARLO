@@ -31,13 +31,13 @@ To launch the program, the minimap require argument are given next (if you are i
 python3 src/main.py -i AA -s 1 -o file.csv
 ```
 
-Obviously, there's a lot parameters. simple type this to have the help:
+Obviously, there's a lot of parameters. simply type this to have the help:
 
 ```bash
 python3 src/main.py -h
 ```
 
-or
+Or this:
 
 ```bash
 python3 src/main.py --help
