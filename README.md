@@ -22,7 +22,7 @@ You need module that are not install into base python. To do so, and to simplify
 To used it, simply type (if you are in `PROJECT_PY_MONTE_CARLO/`):
 
 ```bash
-conda env create -n project_mc -f src/project_mc.yml
+conda env create -n project_mc -f env/project_mc.yml
 conda activate project_mc
 ```
 
